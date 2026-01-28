@@ -51,7 +51,7 @@ def from_nir_data(nir_graph_data: NIRGraphData, jaxsnn_model,
                         raise NotImplementedError(
                             'Conversion of valued TimeGriddedData is not'
                             'supported yet.')
-                    current = jnp.asarray(events.values)
+                    current = jnp.asarray(events.value)
                 else:
                     current = jnp.zeros_like(jnp.asarray(spikes.idx),
                                              dtype=jaxsnn_time.dtype)
