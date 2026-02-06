@@ -123,8 +123,7 @@ class TestNIRDataConversion(unittest.TestCase):
             }
         )
         init, apply = from_nir(self.nir_graph, cfg)
-        apply.nodes = cfg.n_spikes
-        apply.t_max = cfg.t_max
+        
         jaxsnn_model = (init, apply)
         jaxsnn_dict = from_nir_data(nir_data, jaxsnn_model)
 
@@ -145,8 +144,6 @@ class TestNIRDataConversion(unittest.TestCase):
             idx=jnp.array([[0, 1, 3, 5, 2], [4, 3, 2, 1, 0]]),
             current=jnp.array([[0.0, 3.0, 4.5, 0.0, 2.7], [0.5, 0.9, 2.0, 2.6, 1.9]]))}
 
-        apply.nodes = cfg.n_spikes
-        apply.t_max = cfg.t_max
         jaxsnn_model = (init, apply)
         nir_data = to_nir_data(original_spikes, jaxsnn_model, ('spikes', 'current'))
         converted_spikes = from_nir_data(nir_data, jaxsnn_model, ('spikes', 'current'))

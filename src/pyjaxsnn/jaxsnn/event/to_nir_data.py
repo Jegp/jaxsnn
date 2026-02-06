@@ -28,7 +28,6 @@ def to_nir_data(jaxsnn_dict: Dict[str, EventPropSpike], jaxsnn_model,
     """
 
     apply = jaxsnn_model[1]
-    layer_sizes = apply.nodes
 
     nir_nodes = {}
 
@@ -44,11 +43,11 @@ def to_nir_data(jaxsnn_dict: Dict[str, EventPropSpike], jaxsnn_model,
         nir_node_data = NIRNodeData({})
         if "spikes" in observables:
             nir_node_data.observables["spikes"] = EventData(
-                idx, time, layer_sizes[key], apply.t_max)
+                idx, time, apply.n_spikes[key], apply.t_max)
         if "current" in observables:
             current = np.array(spikes.current)
             nir_node_data.observables["current"] = ValuedEventData(
-                idx, time, layer_sizes[key], apply.t_max, current)
+                idx, time, apply.n_spikes[key], apply.t_max, current)
         nir_nodes[key] = nir_node_data
 
     nir_data = NIRGraphData(nir_nodes)

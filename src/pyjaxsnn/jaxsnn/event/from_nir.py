@@ -103,7 +103,6 @@ def convert_cuba_lif(graph, node_key, config: ConversionConfig):  # pylint: disa
     jaxsnn representation is either a HardwareLIF, EventPropLIF or LIF layer
     '''
     node = graph.nodes[node_key]
-    n_spikes = config.n_spikes[node_key]
 
     size = np.size(node.tau_mem)
     tau_mem = convert_to_number(node.tau_mem) * 1e-3  # convert ms to s
@@ -141,7 +140,7 @@ def convert_cuba_lif(graph, node_key, config: ConversionConfig):  # pylint: disa
 
     init, apply = CubaLIF(
         size=size,
-        n_spikes=n_spikes,
+        n_spikes=config.n_spikes[node_key],
         t_max=config.t_max,
         params=params,
         mean=1,  # set via jaxsnn_weights_list
@@ -176,7 +175,6 @@ def from_nir(graph: nir.NIRGraph, config: ConversionConfig):  # pylint: disable=
         if node_key not in config.n_spikes:
             raise KeyError(
                 f"n_spikes for {node_key} not defined in config.n_spikes")
-
     for edge in graph.edges:
         if len(edge) != 2:
             raise ValueError("All edges must have length 2")
@@ -236,5 +234,8 @@ def from_nir(graph: nir.NIRGraph, config: ConversionConfig):  # pylint: disable=
 
     def init_fn(unused1, unused2):  # pylint: disable=unused-argument
         return unused1, jaxsnn_weight_list
+
+    apply_fn.t_max = config.t_max
+    apply_fn.n_spikes = config.n_spikes
 
     return init_fn, apply_fn

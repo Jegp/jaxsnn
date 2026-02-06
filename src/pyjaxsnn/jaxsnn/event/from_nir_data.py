@@ -37,7 +37,7 @@ def from_nir_data(nir_graph_data: NIRGraphData, jaxsnn_model,
                     "spikes" in observables:
                 spikes = nir_node_data.observables["spikes"]
                 if isinstance(spikes, TimeGriddedData):
-                    spikes = spikes.to_event(n_events=apply.nodes[node_key])
+                    spikes = spikes.to_event(n_events=apply.n_spikes[node_key])
 
                 spikes.time = jnp.asarray(spikes.time)
                 jaxsnn_time = jnp.where(spikes.time == np.inf,
