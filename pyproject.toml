@@ -18,9 +18,10 @@ classifiers = [
 dependencies = [
   "jax==0.4.13; python_version=='3.8'",
   "jaxlib==0.4.13; python_version=='3.8'",
-  "jax>=0.4.13,<=0.4.23; python_version>'3.8'",
-  "jaxlib>=0.4.13,<=0.4.23; python_version>'3.8'",
-  "scipy<1.13; python_version>'3.8'",
+  # jaxlib is intentionally not listed: the jax package already depends on the
+  # exact matching jaxlib, so pip resolves it transitively
+  "jax; python_version>'3.8'",
+  "scipy; python_version>'3.8'",
   "optax>=0.1.4",
   "tree-math>0.1.0",
   "matplotlib",
