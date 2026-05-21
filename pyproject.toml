@@ -1,8 +1,10 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "jaxsnn"
+dynamic = ["version"]
 authors = [
   { name="Electronic Vision(s)", email="visions-dev@kip.uni-heidelberg.de" },
 ]
@@ -31,4 +33,9 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["src/pyjaxsnn"]
 include = ["jaxsnn*"]
+
+[tool.setuptools_scm]
+# Version is derived from git (tags + commit distance). When no git metadata
+# is available (e.g. an sdist or a tag-less shallow clone), fall back to this.
+fallback_version = "0.2.1"
 
